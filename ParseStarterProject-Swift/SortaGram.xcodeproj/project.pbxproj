@@ -18,6 +18,8 @@
 		81BA817B1A49E0E500E65899 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81BA817A1A49E0E500E65899 /* SystemConfiguration.framework */; };
 		81BA817F1A49E0F000E65899 /* libstdc++.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 81BA817E1A49E0F000E65899 /* libstdc++.6.dylib */; };
 		A93103ED1BE7DAF10003753D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93103EC1BE7DAF10003753D /* Constants.swift */; };
+		A933F48C1BEAF1250007B0A2 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A933F48B1BEAF1250007B0A2 /* GalleryViewController.swift */; };
+		A933F4901BEAF4470007B0A2 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A933F48F1BEAF4470007B0A2 /* ImageCollectionViewCell.swift */; };
 		A9C206631BE95CDE0010DD43 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C206621BE95CDE0010DD43 /* Post.swift */; };
 		A9C206651BE9B1AB0010DD43 /* FilterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C206641BE9B1AB0010DD43 /* FilterService.swift */; };
 		A9C206671BEAB42C0010DD43 /* ImageResizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C206661BEAB42C0010DD43 /* ImageResizer.swift */; };
@@ -40,6 +42,8 @@
 		81BA817E1A49E0F000E65899 /* libstdc++.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.dylib"; path = "usr/lib/libstdc++.6.dylib"; sourceTree = SDKROOT; };
 		81BA81801A49E10C00E65899 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		A93103EC1BE7DAF10003753D /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = ParseStarterProject/Constants.swift; sourceTree = "<group>"; };
+		A933F48B1BEAF1250007B0A2 /* GalleryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
+		A933F48F1BEAF4470007B0A2 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		A9C206601BE958120010DD43 /* CodeChallenges.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CodeChallenges.playground; sourceTree = "<group>"; };
 		A9C206621BE95CDE0010DD43 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		A9C206641BE9B1AB0010DD43 /* FilterService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterService.swift; sourceTree = "<group>"; };
@@ -96,6 +100,7 @@
 			children = (
 				81BA814A1A49DA1800E65899 /* AppDelegate.swift */,
 				81BA814C1A49DA1800E65899 /* ViewController.swift */,
+				A933F48B1BEAF1250007B0A2 /* GalleryViewController.swift */,
 				A9C206611BE95C9A0010DD43 /* Models */,
 				814C3AC61B69877600E307BB /* Main.storyboard */,
 			);
@@ -134,6 +139,7 @@
 				A9C206621BE95CDE0010DD43 /* Post.swift */,
 				A9C206641BE9B1AB0010DD43 /* FilterService.swift */,
 				A9C206661BEAB42C0010DD43 /* ImageResizer.swift */,
+				A933F48F1BEAF4470007B0A2 /* ImageCollectionViewCell.swift */,
 			);
 			name = Models;
 			path = ..;
@@ -228,6 +234,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				81BA814D1A49DA1800E65899 /* ViewController.swift in Sources */,
+				A933F48C1BEAF1250007B0A2 /* GalleryViewController.swift in Sources */,
+				A933F4901BEAF4470007B0A2 /* ImageCollectionViewCell.swift in Sources */,
 				A9C206651BE9B1AB0010DD43 /* FilterService.swift in Sources */,
 				81BA814B1A49DA1800E65899 /* AppDelegate.swift in Sources */,
 				A93103ED1BE7DAF10003753D /* Constants.swift in Sources */,
