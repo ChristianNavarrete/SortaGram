@@ -30,7 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
        
         // Uncomment and fill in with your Parse credentials:
          Parse.setApplicationId(applicationID, clientKey:clientKey)
-
+        
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
  
         return true
     }

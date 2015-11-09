@@ -8,14 +8,16 @@
 
 import UIKit
 
-class ImageCollectionViewCell: UICollectionViewCell {
+class ImageCollectionViewCell: UICollectionViewCell , UIGestureRecognizerDelegate {
     
     @IBOutlet weak var imageView: UIImageView!
     
+
     
     class func identifier() -> String {
         return "imageCell"
     }
+    
     
     
     

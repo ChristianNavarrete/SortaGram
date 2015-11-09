@@ -53,10 +53,43 @@ howManyOdds([1,2,3,4,5,6,7,8,9,10])
 
 //-----------------------------------------------------------------------------
 
+//Create a fibonacci that computes the first 100
 
 
 
+func findFibs() {
+    
+    let firstNumber = 1
+    let secondNumber = 1
+    
+    var fibArray = [Int]()
+    
+    for _ in 1...100 {
+        
+        let newNumber = firstNumber + secondNumber
+        fibArray.append(newNumber)
+        
+    }
+    
+    
+}
 
+
+//-----------------------------------------------------------------------------
+
+//Palindrome
+
+
+let mystring = "racecar"
+
+var reverse = ""
+
+for character in mystring.characters {
+    var char = "\(character)"
+    reverse = char + reverse
+}
+
+mystring == reverse
 
 
 
