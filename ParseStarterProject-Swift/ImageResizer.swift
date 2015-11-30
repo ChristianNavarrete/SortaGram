@@ -20,8 +20,5 @@ class ImageResizer {
         UIGraphicsEndImageContext()
         return resizedImage
     }
-    
-    //dfjsfadfasdf
-    
-    
+
 }

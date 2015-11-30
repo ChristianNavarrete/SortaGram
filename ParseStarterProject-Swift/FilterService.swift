@@ -36,10 +36,7 @@ class FilterService {
         let outputImage = filter.outputImage
         let extent = outputImage!.extent
         let cgImage = gpuContext.createCGImage(outputImage!, fromRect: extent)
-        
-        let finalImage = UIImage(CGImage: cgImage, scale: 1.0, orientation: UIImageOrientation.Right)
-
-
+        let finalImage = UIImage(CGImage: cgImage)
         return finalImage
     }
     

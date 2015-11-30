@@ -21,7 +21,11 @@ class Post {
     
     init(image:UIImage) {
         
-        self.imageToUpload = image
+        let smallerImage = ImageResizer.resizeImage(image, size: CGSize(width: 600.0, height: 600.0))
+        
+        self.imageToUpload = smallerImage
+        print(smallerImage.size)
+        
         if let imageData = UIImagePNGRepresentation(image) {
             let imageFile = PFFile(name: "image.png", data: imageData)
             post["imageFile"] = imageFile

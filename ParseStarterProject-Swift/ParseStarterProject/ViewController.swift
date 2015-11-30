@@ -63,7 +63,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.presentImagePicker(.PhotoLibrary)
         }
         
-        let upload = UIAlertAction(title: "Upload", style: UIAlertActionStyle.Default) { (action) -> Void in
+        
+        let upload = UIAlertAction(title: "Upload to parse", style: UIAlertActionStyle.Default) { (action) -> Void in
             self.uploadToParse()
         }
         
