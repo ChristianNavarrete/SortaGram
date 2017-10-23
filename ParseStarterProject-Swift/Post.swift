@@ -14,6 +14,8 @@ import Parse
 
 class Post {
     
+    
+    
     var post = PFObject(className: "Post")
     var imageToUpload: UIImage
 
@@ -21,7 +23,11 @@ class Post {
     
     init(image:UIImage) {
         
-        self.imageToUpload = image
+        let smallerImage = ImageResizer.resizeImage(image, size: CGSize(width: 400.0, height: 400.0))
+        
+        self.imageToUpload = smallerImage
+        print(smallerImage.size)
+        
         if let imageData = UIImagePNGRepresentation(image) {
             let imageFile = PFFile(name: "image.png", data: imageData)
             post["imageFile"] = imageFile

@@ -12,20 +12,74 @@ import Parse
 
 
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, ImageSelectedProtocol {
     
     
-    @IBOutlet weak var imgView: UIImageView!
-    
-    
+    var filterArray = ["CIPhotoEffectFade","CIPhotoEffectNoir","CISepiaTone","CIPhotoEffectChrome", "CIPhotoEffectProcess", "CIVignette",       "CIColorInvert"]
+    var displayNameArray = ["Vintage", "Vintage", "B&W", "Chrome", "Chrome","Chrome",""]
+    var filterImages = [UIImage]()
     var hasPickedImage = false
     let picker = UIImagePickerController()
+        var selectedImage:UIImage!
+
+    @IBOutlet weak var imgView: UIImageView!
+    @IBOutlet weak var filterCollectionView: UICollectionView!
+    @IBOutlet weak var selectImageButton: UIButton!
+    @IBOutlet weak var leftFilterConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topButtonContstraint: NSLayoutConstraint!
+    @IBOutlet weak var uploadImageButton: ZFRippleButton!
     
     
+    override func viewWillAppear(animated: Bool) {
+        
+        if let _ = selectedImage {
+            self.imgView.image = selectedImage
+        }
+        
+        if hasPickedImage == true {
+            
+                self.selectedImage = self.imgView.image!
+                self.filterCollectionView.alpha = 1
+                self.selectImageButton.alpha = 0
+                self.leftFilterConstraint.constant = -20
+                self.filterCollectionView.reloadData()
+                self.uploadImageButton.alpha = 1
+            
+            
+        }
+        
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.uploadImageButton.alpha = 0
+        
+        let gallery = GalleryViewController()
+        gallery.delegate = self
+        
         picker.delegate = self
+        self.navigationController!.navigationBar.barTintColor = UIColor(red: 231/255, green: 76/255, blue: 60/255, alpha: 1.0)
+        self.tabBarController!.tabBar.barTintColor = UIColor(red: 231/255, green: 76/255, blue: 60/255, alpha: 1.0)
+        self.view.backgroundColor = UIColor.whiteColor()
+        self.navigationItem.titleView = UIImageView(image: UIImage(named: "navIcon3.png"))
+        
+        let horizontalFlowLayout = CustomFlowLayout()
+        horizontalFlowLayout.setupFilterCollectionView()
+        self.filterCollectionView.collectionViewLayout = horizontalFlowLayout
+        self.filterCollectionView.backgroundColor = UIColor.whiteColor()
+        
+        self.leftFilterConstraint.constant = 400
+    
     }
+    
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    
+    
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -33,11 +87,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     
-    @IBAction func selectFilterPressed(sender: AnyObject) {
+    
+    @IBAction func uploadPressed(sender: AnyObject) {
+            
+        if hasPickedImage == true {
+            self.uploadImage(self.imgView.image)
+        } else {
+            self.displayImagelert()
+        }
         
-        self.presentFilterActionSheet()
         
     }
+    
+    
+
+    
     
 
     @IBAction func grabImagePressed(sender: AnyObject) {
@@ -47,7 +111,21 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         } else if UIImagePickerController.isSourceTypeAvailable(.PhotoLibrary) {
             self.presentImagePicker(.PhotoLibrary)
         }
+        
 
+    }
+    
+    
+    func rotate360Degrees(duration: CFTimeInterval = 0.4, completionDelegate: AnyObject? = nil) {
+        let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
+        rotateAnimation.fromValue = 0.0
+        rotateAnimation.toValue = CGFloat(M_PI * 2.0)
+        rotateAnimation.duration = duration
+        
+        if let delegate: AnyObject = completionDelegate {
+            rotateAnimation.delegate = delegate
+        }
+        self.imgView.layer.addAnimation(rotateAnimation, forKey: nil)
     }
     
     
@@ -63,78 +141,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             self.presentImagePicker(.PhotoLibrary)
         }
         
-        let upload = UIAlertAction(title: "Upload", style: UIAlertActionStyle.Default) { (action) -> Void in
-            self.uploadToParse()
-        }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
         
         action.addAction(cameraAction)
         action.addAction(photoLibraryAction)
-        action.addAction(upload)
         action.addAction(cancelAction)
         
         
         self.presentViewController(action, animated: true, completion: nil)
         
     }
-    
-    func presentFilterActionSheet() {
-        
-        let alertController = UIAlertController(title: "Filters", message: "Choose a Filter", preferredStyle: .ActionSheet)
-        
-        let filterVintage = UIAlertAction(title: "Vintage", style: UIAlertActionStyle.Default) { (alert) -> Void in
-            FilterService.applyVintageEffect(self.imgView.image!, completion: { (filteredImage, name) -> Void in
-                if let filteredImage = filteredImage {
-                    self.imgView.image = filteredImage
-                    print("Vintage Filter Applied")
-                }
-            })
-        }
-        
-        let filterBW = UIAlertAction(title: "Black and White", style: UIAlertActionStyle.Default) { (alert) -> Void in
-            print("BW Filter Applied")
-            FilterService.applyBWEffect(self.imgView.image!, completion: { (filteredImage, name) -> Void in
-                if let filteredImage = filteredImage {
-                    self.imgView.image = filteredImage
-                    print("Black and White Filter Applied")
-                }
-            })
-        }
-        
-        let filterChrome = UIAlertAction(title: "Chrome", style: UIAlertActionStyle.Default) { (alert) -> Void in
-            print("Chrome Filter Applied")
-            FilterService.applyChromeEffect(self.imgView.image!, completion: { (filteredImage, name) -> Void in
-                if let filteredImage = filteredImage {
-                    self.imgView.image = filteredImage
-                    print("Chrome Filter Applied")
-                }
-            })
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
-        
-        alertController.addAction(filterVintage)
-        alertController.addAction(filterBW)
-        alertController.addAction(filterChrome)
-        alertController.addAction(cancelAction)
-        self.presentViewController(alertController, animated: true, completion: nil)
-        
-    }
-    
 
     
     
-    
-    func uploadToParse() {
-        
-        if hasPickedImage == true {
-            self.uploadImage(self.imgView.image)
-        } else {
-            self.displayImagelert()
-        }
-
-    }
     
     
     func uploadImage(image:UIImage?) {
@@ -198,13 +218,79 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         self.imgView.image = image
         self.hasPickedImage = true
+        self.selectImageButton.alpha = 0
         self.dismissViewControllerAnimated(true, completion: nil)
+        self.navigationController?.navigationBar
+        
+        print("did finish picking media")
+        self.view.layoutIfNeeded()
+        
+
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    
+    //MARK: UICollectionViewController Delegate
+    
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        return filterArray.count
+        
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("filterCell", forIndexPath: indexPath) as! FilterCollectionViewCell
+        
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            
+            FilterService.applyEffectToFilter(self.imgView.image!, filterString: self.self.filterArray[indexPath.row], displayString: self.displayNameArray[indexPath.row]) { (filteredImage, name) -> Void in
+                
+                self.filterImages.append(filteredImage!)
+                cell.imageView.image = self.filterImages[indexPath.row]
+                
+            }
+            
+            
+        }
+        
 
+        return cell
+        
+        
+    }
+    
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        NSOperationQueue.mainQueue().addOperationWithBlock { () -> Void in
+            
+            FilterService.applyEffectToFilter(self.selectedImage, filterString: self.filterArray[indexPath.row], displayString: self.displayNameArray[indexPath.row]) { (filteredImage, name) -> Void in
+                self.imgView.image = filteredImage
+            }
+            
+            
+        }
+        
+
+        
+    }
+
+    
+    
+    
+    //MARK: Image Selected Protocol
+    func didSelectImage(image:UIImage) -> Void {
+        
+        self.imgView.image = image
+        
+    }
+    
+    
+    
     
     
     

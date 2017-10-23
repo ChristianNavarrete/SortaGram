@@ -36,11 +36,19 @@ class FilterService {
         let outputImage = filter.outputImage
         let extent = outputImage!.extent
         let cgImage = gpuContext.createCGImage(outputImage!, fromRect: extent)
-        
-        let finalImage = UIImage(CGImage: cgImage, scale: 1.0, orientation: UIImageOrientation.Right)
-
-
+        let finalImage = UIImage(CGImage: cgImage)
         return finalImage
+    }
+    
+    
+    // extra method to be able to plug a string as method perameter for filterName not sure if this was the most convinient way to do it?
+    class func applyEffectToFilter(image : UIImage, filterString: String, displayString: String, completion: (filteredImage : UIImage?, name: String) -> Void){
+        let filterName = filterString
+        let displayName = displayString
+        
+        if let finalImage = self.setUpFilter(filterName, parameters: nil, image: image) {
+            completion(filteredImage: finalImage, name: displayName)
+        }
     }
     
     class func applyVintageEffect(image : UIImage, completion: (filteredImage : UIImage?, name: String) -> Void){
@@ -69,5 +77,13 @@ class FilterService {
             completion(filteredImage: finalImage, name: displayName)
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
     
 }
